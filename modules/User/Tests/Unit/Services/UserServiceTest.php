@@ -79,6 +79,7 @@ class UserServiceTest extends TestCase
           $requestMock = Mockery::mock(UserFormRequest::class);
           $requestMock->shouldReceive('all')
                ->andReturn(['name' => 'John Doe', 'email' => 'john@example.com', 'password' => '12345678']);
+          
           $requestMock->shouldReceive('input')
                ->with('password')
                ->andReturn('12345678');

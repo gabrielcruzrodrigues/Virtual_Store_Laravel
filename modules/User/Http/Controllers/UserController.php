@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Modules\User\Contracts\UserServiceContract;
 use Modules\User\Http\Requests\LoginFormRequest;
 use Modules\User\Http\Requests\UserFormRequest;
+use Modules\User\Models\User;
 
 class UserController extends Controller
 {
