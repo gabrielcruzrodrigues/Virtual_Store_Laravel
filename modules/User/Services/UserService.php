@@ -43,7 +43,6 @@ class UserService implements UserServiceContract
           {
                throw UserInventoryException::unauthorized();
           }
-
           return $request->user()->createToken('api-token')->plainTextToken;
      }
 
