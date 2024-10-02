@@ -33,6 +33,7 @@ class UserService implements UserServiceContract
                DB::rollBack();
                Log::error("Un error ocurred when tryning create user! - ex: {$ex->getMessage()}");
                throw UserInventoryException::createError();
+
           }
      }
 
