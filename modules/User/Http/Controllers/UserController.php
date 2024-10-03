@@ -4,29 +4,25 @@ namespace Modules\User\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Modules\User\Contracts\UserServiceContract;
+use Modules\User\Exceptions\UserInventoryException;
 use Modules\User\Http\Requests\LoginFormRequest;
 use Modules\User\Http\Requests\UserFormRequest;
-use Modules\User\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
      public function __construct(
           private readonly UserServiceContract $userService
-     ){ }
+     ) {}
 
-     public function index() : JsonResponse
+     public function store(UserFormRequest $request): JsonResponse
      {
-          $users = $this->userService->getAll();
-          return response()->json([
-               'success' => true,
-               'data' => $users
-          ]);
-     }
+          $data = $request->validated();
 
-     public function store(UserFormRequest $request) : JsonResponse
-     {
-          $this->userService->create($request);
+          $this->userService->create($data);
 
           return response()->json([
                'success' => true,
@@ -34,13 +30,36 @@ class UserController extends Controller
           ], 201);
      }
 
-     public function login(LoginFormRequest $request) : JsonResponse
+     public function login(LoginFormRequest $request): JsonResponse
      {
-          $token = $this->userService->login($request);
-          
+          $data = $request->validated();
+
+          if (!Auth::attempt($data)) {
+               throw UserInventoryException::unauthorized();
+          }
+
+          $user = Auth::user();
+
+          $token = $this->userService->login($user);
+
           return response()->json([
                'success' => true,
                'token' => $token
+          ]);
+     }
+
+     public function getAllUsers(Request $request)
+     {
+
+          if (!Auth::check()) {
+               throw UserInventoryException::unauthorized();
+          }
+
+          $users = $this->userService->getAll();
+
+          return response()->json([
+               'sucess' => true,
+               'users' => $users
           ]);
      }
 }
