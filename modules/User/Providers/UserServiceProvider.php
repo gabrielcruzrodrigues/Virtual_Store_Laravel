@@ -11,7 +11,7 @@ class UserServiceProvider extends ServiceProvider
      public function boot(): void
      {
           $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-          $this->loadRoutesFrom(__DIR__ . '/../Routes/Web.php');
+          $this->loadRoutesFrom(__DIR__ . '/../Routes/Api.php');
 
           $this->app->bind(UserServiceContract::class, UserService::class);
      }
