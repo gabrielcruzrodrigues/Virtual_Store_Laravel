@@ -27,8 +27,16 @@ class UserFormRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'min:3'],
-            'email' => ['required', 'string', 'min:3', 'email', 'unique:users,email,' . ($userId ? $userId->id : null)],
-            'password' => ['required', 'string', 'min:8']
+          'email' => ['required', 'string', 'min:3', 'email', 'unique:users,email'],
+            'password' => [
+                'required',
+                'string',
+                'min:8', 
+                'regex:/[A-Z]/', 
+                'regex:/[a-z]/',
+                'regex:/[0-9]/', 
+                'regex:/[@$!%*#?&]/',
+            ],
         ];
     }
 
